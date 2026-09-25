@@ -1,0 +1,21 @@
+# Build and output directories
+bin/
+obj/
+Output/
+publish-installer/
+
+# User-specific files
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+.vscode/
+
+# Build log
+*.log
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
