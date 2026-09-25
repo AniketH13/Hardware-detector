@@ -269,16 +269,18 @@ namespace DetectIt
             // TreeView
             hardwareTree = new TreeView
             {
-                Dock          = DockStyle.Fill,
-                BackColor     = BgSecondary,
-                ForeColor     = TextPrimary,
-                Font          = _fontTree,
-                BorderStyle   = BorderStyle.None,
-                ItemHeight    = 44,
-                ShowLines     = false,
-                FullRowSelect = true,
-                HideSelection = false,
-                DrawMode      = TreeViewDrawMode.OwnerDrawText
+                Dock           = DockStyle.Fill,
+                BackColor      = BgSecondary,
+                ForeColor      = TextPrimary,
+                Font           = _fontTree,
+                BorderStyle    = BorderStyle.None,
+                ItemHeight     = 44,
+                ShowLines      = false,
+                ShowPlusMinus  = false,      // ← hide the +/- expand boxes
+                ShowRootLines  = false,      // ← hide root-level connector lines
+                FullRowSelect  = true,
+                HideSelection  = false,
+                DrawMode       = TreeViewDrawMode.OwnerDrawText
             };
             hardwareTree.DrawNode    += OnDrawTreeNode;
             hardwareTree.AfterSelect += OnTreeNodeSelected;
@@ -567,6 +569,8 @@ namespace DetectIt
                 gpuStatValue.Text = ExtractValue(gpu.Details, "Name:");
                 osStatValue.Text  = ExtractValue(os.Details,  "OS:");
 
+                // Expand all category nodes so child items are always visible
+                hardwareTree.ExpandAll();
                 hardwareTree.SelectedNode = summaryNode;
 
                 statusLabel.Text      = "🟢 Hardware scan complete";
