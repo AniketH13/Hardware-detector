@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using System.Management;
 using System.Threading.Tasks;
 
-namespace HardwareDetector
+namespace DetectIt
 {
     public class MainForm : Form
     {
@@ -29,27 +29,36 @@ namespace HardwareDetector
                 var principal = new System.Security.Principal.WindowsPrincipal(identity);
                 if (!principal.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator))
                 {
-                    statusLabel.Text = "Note: Run as Administrator for full hardware access";
-                    statusLabel.ForeColor = Color.FromArgb(255, 200, 100);
+                    statusLabel.Text = "⚠️ Note: Run as Administrator for full hardware access";
+                    statusLabel.ForeColor = Color.FromArgb(255, 159, 10); // Orange warning color
                 }
             }
         }
 
         private void InitializeComponents()
         {
+            // Dark mode color scheme
+            Color bgDark = Color.FromArgb(18, 18, 18);           // Main background
+            Color bgSecondary = Color.FromArgb(28, 28, 30);      // Secondary panels
+            Color bgTertiary = Color.FromArgb(38, 38, 42);       // Elevated elements
+            Color accentPrimary = Color.FromArgb(0, 122, 255);   // Blue accent
+            Color accentSuccess = Color.FromArgb(48, 209, 88);   // Green accent
+            Color textPrimary = Color.FromArgb(242, 242, 247);   // Main text
+            Color textSecondary = Color.FromArgb(142, 142, 147); // Secondary text
+
             // Main form setup
-            this.Text = "DetectIt - Hardware Detector";
+            this.Text = "DetectIt";
             this.Size = new Size(1000, 700);
             this.MinimumSize = new Size(800, 600);
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.BackColor = Color.FromArgb(240, 240, 245);
+            this.BackColor = bgDark;
 
             // Header panel
             Panel headerPanel = new Panel
             {
                 Dock = DockStyle.Top,
                 Height = 70,
-                BackColor = Color.FromArgb(41, 128, 185),
+                BackColor = bgSecondary,
                 Padding = new Padding(20, 10, 20, 10)
             };
 
@@ -57,7 +66,7 @@ namespace HardwareDetector
             {
                 Text = "DetectIt",
                 Font = new Font("Segoe UI", 24, FontStyle.Bold),
-                ForeColor = Color.White,
+                ForeColor = textPrimary,
                 AutoSize = true,
                 Location = new Point(20, 15)
             };
@@ -66,7 +75,7 @@ namespace HardwareDetector
             {
                 Text = "Ready",
                 Font = new Font("Segoe UI", 10),
-                ForeColor = Color.White,
+                ForeColor = textSecondary,
                 AutoSize = true,
                 Location = new Point(20, 45)
             };
@@ -79,42 +88,44 @@ namespace HardwareDetector
             {
                 Dock = DockStyle.Top,
                 Height = 50,
-                BackColor = Color.White,
+                BackColor = bgSecondary,
                 Padding = new Padding(10)
             };
 
             refreshButton = new Button
             {
-                Text = "Refresh",
-                Size = new Size(120, 30),
+                Text = "🔄 Refresh",
+                Size = new Size(130, 30),
                 Location = new Point(10, 10),
                 FlatStyle = FlatStyle.Flat,
-                BackColor = Color.FromArgb(52, 152, 219),
+                BackColor = accentPrimary,
                 ForeColor = Color.White,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
                 Cursor = Cursors.Hand
             };
             refreshButton.FlatAppearance.BorderSize = 0;
+            refreshButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(10, 132, 255);
             refreshButton.Click += async (s, e) => await LoadHardwareInfo();
 
             exportButton = new Button
             {
-                Text = "Export",
-                Size = new Size(120, 30),
-                Location = new Point(140, 10),
+                Text = "📁 Export",
+                Size = new Size(130, 30),
+                Location = new Point(150, 10),
                 FlatStyle = FlatStyle.Flat,
-                BackColor = Color.FromArgb(46, 204, 113),
+                BackColor = accentSuccess,
                 ForeColor = Color.White,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
                 Cursor = Cursors.Hand
             };
             exportButton.FlatAppearance.BorderSize = 0;
+            exportButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(58, 219, 98);
             exportButton.Click += ExportToText;
 
             progressBar = new ProgressBar
             {
                 Size = new Size(200, 25),
-                Location = new Point(280, 12),
+                Location = new Point(300, 12),
                 Style = ProgressBarStyle.Marquee,
                 Visible = false
             };
@@ -128,10 +139,11 @@ namespace HardwareDetector
             {
                 Dock = DockStyle.Left,
                 Width = 280,
-                BackColor = Color.White,
+                BackColor = bgSecondary,
+                ForeColor = textPrimary,
                 Font = new Font("Segoe UI", 10),
                 BorderStyle = BorderStyle.None,
-                ItemHeight = 30,
+                ItemHeight = 36,
                 ShowLines = false,
                 FullRowSelect = true,
                 HideSelection = false,
@@ -144,14 +156,15 @@ namespace HardwareDetector
             Panel detailsPanel = new Panel
             {
                 Dock = DockStyle.Fill,
-                BackColor = Color.White,
-                Padding = new Padding(10)
+                BackColor = bgDark,
+                Padding = new Padding(15)
             };
 
             detailsBox = new RichTextBox
             {
                 Dock = DockStyle.Fill,
-                BackColor = Color.White,
+                BackColor = bgTertiary,
+                ForeColor = textPrimary,
                 Font = new Font("Consolas", 11),
                 BorderStyle = BorderStyle.None,
                 ReadOnly = true,
@@ -164,8 +177,8 @@ namespace HardwareDetector
             Splitter splitter = new Splitter
             {
                 Dock = DockStyle.Left,
-                Width = 5,
-                BackColor = Color.FromArgb(220, 220, 220)
+                Width = 2,
+                BackColor = bgDark
             };
 
             // Add controls to form
@@ -181,15 +194,49 @@ namespace HardwareDetector
             if (e.Node == null) return;
 
             bool selected = (e.State & TreeNodeStates.Selected) != 0;
-            Color backColor = selected ? Color.FromArgb(52, 152, 219) : Color.White;
-            Color foreColor = selected ? Color.White : Color.FromArgb(50, 50, 50);
+            bool isParent = e.Node.Parent == null;
 
+            Color bgSecondary = Color.FromArgb(28, 28, 30);
+            Color accentPrimary = Color.FromArgb(0, 122, 255);
+            Color textPrimary = Color.FromArgb(242, 242, 247);
+            Color textSecondary = Color.FromArgb(142, 142, 147);
+
+            Color backColor = selected ? Color.FromArgb(48, 48, 52) : bgSecondary;
+            Color foreColor = selected ? accentPrimary : (isParent ? textPrimary : textSecondary);
+
+            // Draw background
             e.Graphics.FillRectangle(new SolidBrush(backColor), e.Bounds);
 
+            // Add left accent bar for selected items
+            if (selected)
+            {
+                e.Graphics.FillRectangle(new SolidBrush(accentPrimary),
+                    new Rectangle(e.Bounds.Left, e.Bounds.Top, 3, e.Bounds.Height));
+            }
+
+            // Configure text rendering
             using (StringFormat sf = new StringFormat())
             {
                 sf.LineAlignment = StringAlignment.Center;
-                e.Graphics.DrawString(e.Node.Text, hardwareTree.Font, new SolidBrush(foreColor), e.Bounds, sf);
+                sf.Trimming = StringTrimming.EllipsisCharacter;
+                sf.FormatFlags = StringFormatFlags.NoWrap;
+
+                int leftPadding = isParent ? 15 : 30;
+                Rectangle textBounds = new Rectangle(
+                    e.Bounds.Left + leftPadding,
+                    e.Bounds.Top,
+                    e.Bounds.Width - leftPadding - 5,
+                    e.Bounds.Height);
+
+                Font font = isParent ? new Font(hardwareTree.Font, FontStyle.Bold) : hardwareTree.Font;
+
+                // Use TextRenderer for better text quality and no overlapping
+                TextRenderer.DrawText(e.Graphics, e.Node.Text, font, textBounds, foreColor,
+                    TextFormatFlags.Left | TextFormatFlags.VerticalCenter |
+                    TextFormatFlags.EndEllipsis | TextFormatFlags.NoPrefix);
+
+                if (isParent)
+                    font.Dispose();
             }
         }
 
@@ -256,15 +303,17 @@ namespace HardwareDetector
                 // Add "No devices found" message
                 TreeNode emptyNode = new TreeNode("No devices found")
                 {
-                    ForeColor = Color.Gray,
+                    ForeColor = Color.FromArgb(99, 99, 102),
                     Tag = "No devices were detected in this category."
                 };
                 data.nodes = new TreeNode[] { emptyNode };
             }
 
+            Color bgSecondary = Color.FromArgb(28, 28, 30);
             TreeNode node = new TreeNode(data.name)
             {
-                BackColor = Color.FromArgb(230, 240, 250)
+                BackColor = bgSecondary,
+                ForeColor = Color.FromArgb(242, 242, 247)
             };
 
             node.Nodes.AddRange(data.nodes);

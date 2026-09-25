@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace HardwareDetector
+namespace DetectIt
 {
     static class Program
     {
