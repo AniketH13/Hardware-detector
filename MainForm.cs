@@ -99,8 +99,8 @@ namespace DetectIt
         private void InitializeLayout()
         {
             Text            = "DetectIt – Hardware Detector & Diagnostics";
-            Size            = new Size(1100, 720);
-            MinimumSize     = new Size(880, 620);
+            Size            = new Size(1200, 780);
+            MinimumSize     = new Size(960, 660);
             StartPosition   = FormStartPosition.CenterScreen;
             BackColor       = BgDark;
             Font            = new Font("Segoe UI", 9.5f);
@@ -119,9 +119,9 @@ namespace DetectIt
             var panel = new Panel
             {
                 Dock      = DockStyle.Top,
-                Height    = 70,
+                Height    = 88,
                 BackColor = BgSecondary,
-                Padding   = new Padding(20, 10, 20, 10)
+                Padding   = new Padding(24, 12, 24, 12)
             };
 
             // Bottom border line
@@ -133,11 +133,11 @@ namespace DetectIt
             });
 
             // Icon badge
-            var badge = new Panel { Size = new Size(38, 38), Location = new Point(20, 15), BackColor = AccentBlue };
+            var badge = new Panel { Size = new Size(44, 44), Location = new Point(24, 20), BackColor = AccentBlue };
             badge.Controls.Add(new Label
             {
                 Text      = "⚡",
-                Font      = new Font("Segoe UI", 16, FontStyle.Bold),
+                Font      = new Font("Segoe UI", 18, FontStyle.Bold),
                 ForeColor = Color.White,
                 Dock      = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleCenter
@@ -147,10 +147,10 @@ namespace DetectIt
             panel.Controls.Add(new Label
             {
                 Text      = "DetectIt",
-                Font      = new Font("Segoe UI", 18, FontStyle.Bold),
+                Font      = new Font("Segoe UI", 20, FontStyle.Bold),
                 ForeColor = TextPrimary,
                 AutoSize  = true,
-                Location  = new Point(68, 12)
+                Location  = new Point(80, 13)
             });
 
             panel.Controls.Add(new Label
@@ -160,17 +160,17 @@ namespace DetectIt
                 ForeColor = AccentBlue,
                 BackColor = Color.FromArgb(20, 10, 132, 255),
                 AutoSize  = true,
-                Location  = new Point(175, 18),
-                Padding   = new Padding(4, 2, 4, 2)
+                Location  = new Point(197, 20),
+                Padding   = new Padding(5, 3, 5, 3)
             });
 
             panel.Controls.Add(new Label
             {
                 Text      = "Hardware Detection & System Diagnostics",
-                Font      = new Font("Segoe UI", 9),
+                Font      = new Font("Segoe UI", 9.5f),
                 ForeColor = TextMuted,
                 AutoSize  = true,
-                Location  = new Point(69, 40)
+                Location  = new Point(81, 50)
             });
 
             // Action buttons on the right
@@ -182,20 +182,20 @@ namespace DetectIt
 
         private Panel BuildActionPanel()
         {
-            var panel = new Panel { Dock = DockStyle.Right, Width = 320, BackColor = Color.Transparent };
+            var panel = new Panel { Dock = DockStyle.Right, Width = 360, BackColor = Color.Transparent };
 
-            refreshButton = CreateButton("🔄 Refresh", 35, 16, 125, AccentBlue, Color.FromArgb(40, 150, 255));
+            refreshButton = CreateButton("🔄 Refresh", 20, 24, 140, AccentBlue, Color.FromArgb(40, 150, 255));
             refreshButton.Click += async (_, _) => await LoadHardwareInfoAsync();
 
-            exportButton = CreateButton("📁 Export Report", 170, 16, 135, AccentGreen, Color.FromArgb(68, 220, 108));
+            exportButton = CreateButton("📁 Export Report", 172, 24, 158, AccentGreen, Color.FromArgb(68, 220, 108));
             exportButton.Click += ExportToText;
 
             progressBar = new ProgressBar
             {
-                Size    = new Size(270, 4),
-                Location = new Point(35, 56),
-                Style   = ProgressBarStyle.Marquee,
-                Visible = false
+                Size     = new Size(320, 4),
+                Location = new Point(20, 68),
+                Style    = ProgressBarStyle.Marquee,
+                Visible  = false
             };
 
             panel.Controls.Add(refreshButton);
@@ -209,16 +209,16 @@ namespace DetectIt
             var btn = new Button
             {
                 Text      = text,
-                Size      = new Size(width, 36),
+                Size      = new Size(width, 40),
                 Location  = new Point(x, y),
                 FlatStyle = FlatStyle.Flat,
                 BackColor = bg,
                 ForeColor = Color.White,
-                Font      = new Font("Segoe UI", 9.5f, FontStyle.Bold),
+                Font      = new Font("Segoe UI", 10f, FontStyle.Bold),
                 Cursor    = Cursors.Hand
             };
-            btn.FlatAppearance.BorderSize          = 0;
-            btn.FlatAppearance.MouseOverBackColor  = hover;
+            btn.FlatAppearance.BorderSize         = 0;
+            btn.FlatAppearance.MouseOverBackColor = hover;
             return btn;
         }
 
@@ -227,9 +227,9 @@ namespace DetectIt
             var panel = new Panel
             {
                 Dock      = DockStyle.Left,
-                Width     = 270,
+                Width     = 320,
                 BackColor = BgSecondary,
-                Padding   = new Padding(10)
+                Padding   = new Padding(12)
             };
 
             // Right border
@@ -242,23 +242,23 @@ namespace DetectIt
                 Font      = new Font("Segoe UI", 8, FontStyle.Bold),
                 ForeColor = TextMuted,
                 Dock      = DockStyle.Top,
-                Height    = 30,
+                Height    = 36,
                 TextAlign = ContentAlignment.MiddleLeft,
-                Padding   = new Padding(10, 5, 0, 0)
+                Padding   = new Padding(12, 0, 0, 0)
             });
 
             // Status card (docked bottom, added before TreeView so TreeView fills remaining space)
             var statusCard = new Panel
             {
                 Dock      = DockStyle.Bottom,
-                Height    = 65,
+                Height    = 70,
                 BackColor = BgDark,
-                Padding   = new Padding(12)
+                Padding   = new Padding(16, 12, 16, 12)
             };
             statusLabel = new Label
             {
                 Text      = "Status: Initializing...",
-                Font      = new Font("Segoe UI", 8.5f),
+                Font      = new Font("Segoe UI", 9f),
                 ForeColor = TextMuted,
                 Dock      = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft
@@ -274,13 +274,13 @@ namespace DetectIt
                 ForeColor     = TextPrimary,
                 Font          = _fontTree,
                 BorderStyle   = BorderStyle.None,
-                ItemHeight    = 38,
+                ItemHeight    = 44,
                 ShowLines     = false,
                 FullRowSelect = true,
                 HideSelection = false,
                 DrawMode      = TreeViewDrawMode.OwnerDrawText
             };
-            hardwareTree.DrawNode   += OnDrawTreeNode;
+            hardwareTree.DrawNode    += OnDrawTreeNode;
             hardwareTree.AfterSelect += OnTreeNodeSelected;
             panel.Controls.Add(hardwareTree);
 
@@ -289,15 +289,15 @@ namespace DetectIt
 
         private Panel BuildMainContent()
         {
-            var panel = new Panel { Dock = DockStyle.Fill, BackColor = BgDark, Padding = new Padding(16) };
+            var panel = new Panel { Dock = DockStyle.Fill, BackColor = BgDark, Padding = new Padding(0) };
 
             // Inspector header bar
             var inspectorBar = new Panel
             {
                 Dock      = DockStyle.Top,
-                Height    = 45,
+                Height    = 56,
                 BackColor = BgSecondary,
-                Padding   = new Padding(15, 8, 15, 8)
+                Padding   = new Padding(20, 0, 20, 0)
             };
             inspectorTitleLabel = new Label
             {
@@ -305,28 +305,36 @@ namespace DetectIt
                 Font      = _fontHeading,
                 ForeColor = TextPrimary,
                 AutoSize  = true,
-                Location  = new Point(12, 10)
+                Location  = new Point(20, 16)
             };
             wmiBadgeLabel = new Label
             {
                 Text      = "System Overview",
-                Font      = new Font("Segoe UI", 8.5f),
+                Font      = new Font("Segoe UI", 9f),
                 ForeColor = AccentBlue,
                 AutoSize  = true,
-                Location  = new Point(300, 12)
+                Location  = new Point(340, 19)
             };
+            // Bottom border
+            inspectorBar.Controls.Add(new Panel { Dock = DockStyle.Bottom, Height = 1, BackColor = BorderColor });
             inspectorBar.Controls.Add(inspectorTitleLabel);
             inspectorBar.Controls.Add(wmiBadgeLabel);
 
             // Stat cards row
             var statsRow = BuildStatsRow();
 
-            // Details pane
+            // Details pane wrapper with gap from edges
+            var detailsWrapper = new Panel
+            {
+                Dock      = DockStyle.Fill,
+                BackColor = BgDark,
+                Padding   = new Padding(16, 12, 16, 16)
+            };
             var detailsContainer = new Panel
             {
                 Dock      = DockStyle.Fill,
                 BackColor = BgTertiary,
-                Padding   = new Padding(16)
+                Padding   = new Padding(20, 16, 20, 16)
             };
             detailsBox = new RichTextBox
             {
@@ -339,9 +347,10 @@ namespace DetectIt
                 DetectUrls  = true
             };
             detailsContainer.Controls.Add(detailsBox);
+            detailsWrapper.Controls.Add(detailsContainer);
 
             // Order matters for DockStyle.Fill+Top stacking
-            panel.Controls.Add(detailsContainer);
+            panel.Controls.Add(detailsWrapper);
             panel.Controls.Add(statsRow);
             panel.Controls.Add(inspectorBar);
             return panel;
@@ -351,10 +360,10 @@ namespace DetectIt
         {
             var row = new Panel
             {
-                Dock       = DockStyle.Top,
-                Height     = 90,
-                BackColor  = Color.Transparent,
-                Padding    = new Padding(0, 10, 0, 10)
+                Dock      = DockStyle.Top,
+                Height    = 110,
+                BackColor = BgDark,
+                Padding   = new Padding(16, 12, 16, 0)
             };
 
             var grid = new TableLayoutPanel
@@ -362,7 +371,8 @@ namespace DetectIt
                 Dock        = DockStyle.Fill,
                 ColumnCount = 4,
                 RowCount    = 1,
-                BackColor   = Color.Transparent
+                BackColor   = Color.Transparent,
+                CellBorderStyle = TableLayoutPanelCellBorderStyle.None
             };
             for (int i = 0; i < 4; i++)
                 grid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25f));
@@ -382,27 +392,30 @@ namespace DetectIt
             {
                 Dock      = DockStyle.Fill,
                 BackColor = BgSecondary,
-                Margin    = new Padding(4),
-                Padding   = new Padding(12, 8, 12, 8)
+                Margin    = new Padding(0, 0, 8, 0),
+                Padding   = new Padding(16, 12, 16, 12)
             };
+            // Left accent stripe
+            var stripe = new Panel { Dock = DockStyle.Left, Width = 3, BackColor = accentColor };
             var titleLbl = new Label
             {
                 Text      = title,
-                Font      = new Font("Segoe UI", 7.5f, FontStyle.Bold),
+                Font      = new Font("Segoe UI", 8f, FontStyle.Bold),
                 ForeColor = TextMuted,
                 Dock      = DockStyle.Top,
-                Height    = 16
+                Height    = 18
             };
             valueLabel = new Label
             {
                 Text      = "Detecting…",
-                Font      = new Font("Segoe UI", 9.5f, FontStyle.Bold),
+                Font      = new Font("Segoe UI", 10.5f, FontStyle.Bold),
                 ForeColor = accentColor,
                 Dock      = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft
             };
             card.Controls.Add(valueLabel);
             card.Controls.Add(titleLbl);
+            card.Controls.Add(stripe);
             return card;
         }
 
@@ -421,18 +434,19 @@ namespace DetectIt
 
             if (selected)
             {
+                // Taller accent bar (full height, 4px wide)
                 e.Graphics.FillRectangle(_brushAccentBlue,
-                    new Rectangle(e.Bounds.Left, e.Bounds.Top + 4, 3, e.Bounds.Height - 8));
+                    new Rectangle(e.Bounds.Left, e.Bounds.Top, 4, e.Bounds.Height));
             }
 
-            Color foreColor = selected ? AccentBlue : (isParent ? TextPrimary : TextMuted);
-            Font  font      = isParent ? _fontTreeBold : _fontTree;   // no allocation
-            int   leftIndent = isParent ? 14 : 32;
+            Color foreColor  = selected ? AccentBlue : (isParent ? TextPrimary : TextMuted);
+            Font  font       = isParent ? _fontTreeBold : _fontTree;
+            int   leftIndent = isParent ? 18 : 40;
 
             var textRect = new Rectangle(
                 e.Bounds.Left + leftIndent,
                 e.Bounds.Top,
-                e.Bounds.Width - leftIndent - 5,
+                e.Bounds.Width - leftIndent - 8,
                 e.Bounds.Height);
 
             TextRenderer.DrawText(e.Graphics, e.Node.Text, font, textRect, foreColor,
