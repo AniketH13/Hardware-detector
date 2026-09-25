@@ -54,7 +54,7 @@ echo.
 
 :build
 echo Building application...
-dotnet publish HardwareDetectorApp.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish-installer
+dotnet publish DetectIt.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish-installer
 
 if %ERRORLEVEL% NEQ 0 (
     echo.

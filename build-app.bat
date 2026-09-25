@@ -11,7 +11,7 @@ if exist "bin\Release" rmdir /s /q "bin\Release"
 if exist "publish-app" rmdir /s /q "publish-app"
 
 REM Build the Windows Forms application
-dotnet publish HardwareDetectorApp.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish-app
+dotnet publish DetectIt.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish-app
 
 if %ERRORLEVEL% EQU 0 (
     echo.

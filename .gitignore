@@ -3,6 +3,8 @@ bin/
 obj/
 Output/
 publish-installer/
+publish-app/
+publish-msi/
 
 # User-specific files
 *.user

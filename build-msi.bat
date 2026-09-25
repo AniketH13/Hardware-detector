@@ -14,7 +14,7 @@ pause
 
 REM Build the application first
 echo Building application...
-dotnet publish HardwareDetectorApp.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish-msi
+dotnet publish DetectIt.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish-msi
 
 if %ERRORLEVEL% NEQ 0 (
     echo Build failed!

@@ -8,7 +8,7 @@ echo without creating installer packages.
 echo.
 
 echo Testing build...
-dotnet build HardwareDetectorApp.csproj -c Release
+dotnet build DetectIt.csproj -c Release
 
 if %ERRORLEVEL% EQU 0 (
     echo.
